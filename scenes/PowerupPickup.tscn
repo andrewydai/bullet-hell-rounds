@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://dxh40avsukv2q"]
+
+[ext_resource type="Script" uid="uid://bbr28ao1s8hsp" path="res://scripts/PowerupPickup.gd" id="1_s"]
+
+[node name="root" type="Area2D"]
+script = ExtResource("1_s")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]

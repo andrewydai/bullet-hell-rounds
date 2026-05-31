@@ -15,6 +15,7 @@
 [node name="BulletSpawner" parent="." instance=ExtResource("3_gw")]
 
 [node name="PowerupManager" parent="." instance=ExtResource("4_gw")]
+spawn_interval_seconds = 5.0
 
 [node name="Player1" parent="." instance=ExtResource("5_gw")]
 position = Vector2(320, 360)

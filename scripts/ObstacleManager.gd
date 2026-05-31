@@ -12,5 +12,5 @@ func _ready() -> void:
 
 ## Called by PowerupManager when a player activates a TRAP or OBSTACLE powerup.
 func place_obstacle_at(world_position: Vector2) -> void:
-	# TODO Stage 2: instantiate obstacle scene, apply symmetry, register for cleanup
+	
 	GameEvents.obstacle_placed.emit(world_position)

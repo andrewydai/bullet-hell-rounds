@@ -36,10 +36,12 @@ func activate(start_position: Vector2, direction: Vector2, speed: float = 300.0)
 	set_process(true)
 
 ## Returns the bullet to the pool: invisible, no physics, no processing.
+## monitoring uses set_deferred because Godot's physics lock prevents direct
+## assignment inside a body_entered callback.
 func deactivate() -> void:
 	is_active  = false
 	visible    = false
-	monitoring = false
+	set_deferred("monitoring", false)
 	set_process(false)
 
 func _is_outside_screen() -> bool:
@@ -52,6 +54,8 @@ func _is_outside_screen() -> bool:
 	)
 
 func _on_body_entered(body: Node) -> void:
+	if not is_active:
+		return  # deferred monitoring hasn't cleared yet; ignore phantom signals
 	if body.has_method("die"):
 		body.die()
 	deactivate()
