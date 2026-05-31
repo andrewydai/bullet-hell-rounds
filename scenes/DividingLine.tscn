@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dd1auml6p6ik5"]
+
+[ext_resource type="Script" uid="uid://7bhyjbm5yxru" path="res://scripts/DividingLine.gd" id="1_s"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_or8cf"]
+size = Vector2(10, 300)
+
+[node name="root" type="Node2D"]
+script = ExtResource("1_s")
+
+[node name="Line2D" type="Line2D" parent="."]
+
+[node name="KillZone" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KillZone"]
+shape = SubResource("RectangleShape2D_or8cf")

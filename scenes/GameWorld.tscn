@@ -1,0 +1,24 @@
+[gd_scene load_steps=6 format=3 uid="uid://df6o1lhv0xyvr"]
+
+[ext_resource type="PackedScene" uid="uid://dd1auml6p6ik5" path="res://scenes/DividingLine.tscn" id="1_gw"]
+[ext_resource type="PackedScene" uid="uid://1xr0kblm81sl" path="res://scenes/ObstacleManager.tscn" id="2_gw"]
+[ext_resource type="PackedScene" uid="uid://p80tiwfbghqo" path="res://scenes/BulletSpawner.tscn" id="3_gw"]
+[ext_resource type="PackedScene" uid="uid://cu7t87o0e5aky" path="res://scenes/PowerupManager.tscn" id="4_gw"]
+[ext_resource type="PackedScene" uid="uid://cb1703l3kvoth" path="res://scenes/Player.tscn" id="5_gw"]
+
+[node name="GameWorld" type="Node2D"]
+
+[node name="DividingLine" parent="." instance=ExtResource("1_gw")]
+
+[node name="ObstacleManager" parent="." instance=ExtResource("2_gw")]
+
+[node name="BulletSpawner" parent="." instance=ExtResource("3_gw")]
+
+[node name="PowerupManager" parent="." instance=ExtResource("4_gw")]
+
+[node name="Player1" parent="." instance=ExtResource("5_gw")]
+position = Vector2(320, 360)
+
+[node name="Player2" parent="." instance=ExtResource("5_gw")]
+position = Vector2(960, 360)
+player_index = 1
