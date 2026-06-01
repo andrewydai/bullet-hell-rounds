@@ -11,10 +11,15 @@ extends CharacterBody2D
 const PLAYER_HALF_SIZE: float = 16.0
 
 ## Powerup type IDs — mirrors PowerupPickup.Type enum order.
-const POWERUP_NONE: int  = -1
-const POWERUP_SHOOT: int =  0
+const POWERUP_NONE: int   = -1
+const POWERUP_SHOOT: int  =  0
+const POWERUP_SPREAD: int =  1
 
-const BULLET_SCENE: PackedScene = preload("res://scenes/Bullet.tscn")
+const BULLET_SCENE: PackedScene       = preload("res://scenes/Bullet.tscn")
+const HEAVY_BULLET_SCENE: PackedScene = preload("res://scenes/HeavyBullet.tscn")
+
+## Spread angle offset in radians between each of the 3 spread bullets (~20°).
+const SPREAD_ANGLE: float = 0.35
 
 @export var shoot_cooldown_seconds: float = 0.25
 @export var powerup_duration_seconds: float = 10.0
@@ -50,10 +55,13 @@ func _physics_process(delta: float) -> void:
 	_clamp_position_to_screen()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not _is_alive or _active_powerup != POWERUP_SHOOT:
+	if not _is_alive:
 		return
-	if event.is_action_pressed("p%d_action" % player_index):
-		_try_shoot()
+	if not event.is_action_pressed("p%d_action" % player_index):
+		return
+	match _active_powerup:
+		POWERUP_SHOOT:  _try_shoot()
+		POWERUP_SPREAD: _try_shoot_spread()
 
 ## Reads this player's directional actions and returns a normalized movement vector.
 ## Also rotates the sprite to face the nearest of the 8 cardinal/diagonal directions.
@@ -71,7 +79,7 @@ func _read_movement_input() -> Vector2:
 ## vector so shooting always fires along a clean diagonal or cardinal direction.
 func _face_direction(dir: Vector2) -> void:
 	var snapped_angle: float = round(dir.angle() / (PI / 4.0)) * (PI / 4.0)
-	$Sprite2D.rotation = snapped_angle
+	$Sprite2D.rotation = snapped_angle + (PI / 2.0)
 	_facing_direction = Vector2.from_angle(snapped_angle)
 
 ## Keeps the player inside the visible screen area.
@@ -82,7 +90,8 @@ func _clamp_position_to_screen() -> void:
 
 ## Tints the player node to visually distinguish the two players.
 func _apply_player_color() -> void:
-	modulate = Color(0.4, 0.6, 1.0) if player_index == 0 else Color(1.0, 0.4, 0.4)
+	pass
+	#modulate = Color(0.4, 0.6, 1.0) if player_index == 0 else Color(1.0, 0.4, 0.4)
 
 ## Builds a 32×32 rectangle collision shape at runtime.
 func _setup_collision_shape() -> void:
@@ -93,16 +102,18 @@ func _setup_collision_shape() -> void:
 ## Creates a solid white 32×32 texture at runtime as a placeholder for future pixel art.
 ## Replace $Sprite2D.texture with a real texture when assets are ready.
 func _create_placeholder_sprite() -> void:
-	var image := Image.create(32, 32, false, Image.FORMAT_RGBA8)
-	image.fill(Color.WHITE)
-	$Sprite2D.texture = ImageTexture.create_from_image(image)
+	var offset := player_index * 16
 	
-	var gun_image := Image.create(16, 8, false, Image.FORMAT_RGBA8)
-	gun_image.fill(Color.WHITE)
-	$Sprite2D/GunSprite.texture = ImageTexture.create_from_image(gun_image)
+	$Sprite2D.texture = $Sprite2D.texture.duplicate()
+	$Sprite2D.texture.region = Rect2(offset, 16, 16, 16)
+	
+	$Sprite2D/GunSprite.texture = $Sprite2D/GunSprite.texture.duplicate()
+	$Sprite2D/GunSprite.texture.region = Rect2(offset, 0, 16, 16)
 
 ## Called by PowerupPickup when this player walks over it.
 func collect_powerup(powerup_type: int) -> void:
+	if powerup_type == 0:
+		$Sprite2D/GunSprite.show()
 	_active_powerup = powerup_type
 	_powerup_timer.start(powerup_duration_seconds)
 	print("Player %d collected powerup %d" % [player_index, powerup_type])
@@ -119,8 +130,21 @@ func _try_shoot() -> void:
 	var spawn_pos := global_position + _facing_direction * (PLAYER_HALF_SIZE + 10.0)
 	bullet.activate(spawn_pos, _facing_direction)
 
+## Fires 3 heavy bullets in a fan: center, +SPREAD_ANGLE, and -SPREAD_ANGLE.
+func _try_shoot_spread() -> void:
+	if _shoot_cooldown > 0.0:
+		return
+	_shoot_cooldown = shoot_cooldown_seconds
+	for angle_offset in [-SPREAD_ANGLE, 0.0, SPREAD_ANGLE]:
+		var spread_dir := _facing_direction.rotated(angle_offset)
+		var spawn_pos  := global_position + spread_dir * (PLAYER_HALF_SIZE + 10.0)
+		var bullet: Area2D = HEAVY_BULLET_SCENE.instantiate()
+		get_parent().add_child(bullet)
+		bullet.activate(spawn_pos, spread_dir)
+
 ## Clears the active powerup when its 10-second window expires.
 func _on_powerup_expired() -> void:
+	$Sprite2D/GunSprite.hide()
 	_active_powerup = POWERUP_NONE
 	print("Player %d: powerup expired" % player_index)
 

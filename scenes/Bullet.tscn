@@ -1,10 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://dqjqtawk47b3q"]
+[gd_scene format=3 uid="uid://dqjqtawk47b3q"]
 
 [ext_resource type="Script" uid="uid://dstgokes20fan" path="res://scripts/Bullet.gd" id="1_s"]
+[ext_resource type="Texture2D" uid="uid://csip6dgp3xp5y" path="res://assets/spritesheet.png" id="2_p1sfj"]
 
-[node name="root" type="Area2D"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_4utqk"]
+atlas = ExtResource("2_p1sfj")
+
+[node name="root" type="Area2D" unique_id=286014940]
+scale = Vector2(3, 3)
 script = ExtResource("1_s")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1927775397]
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=771382051]
+texture = SubResource("AtlasTexture_4utqk")

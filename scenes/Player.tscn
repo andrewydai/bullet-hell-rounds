@@ -1,14 +1,26 @@
-[gd_scene load_steps=2 format=3 uid="uid://cb1703l3kvoth"]
+[gd_scene format=3 uid="uid://cb1703l3kvoth"]
 
 [ext_resource type="Script" uid="uid://jni6073g28xw" path="res://scripts/Player.gd" id="1_s"]
+[ext_resource type="Texture2D" uid="uid://csip6dgp3xp5y" path="res://assets/spritesheet.png" id="2_v6fml"]
 
-[node name="root" type="CharacterBody2D"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_3li8b"]
+atlas = ExtResource("2_v6fml")
+region = Rect2(0, 16, 32, 240)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v6fml"]
+atlas = ExtResource("2_v6fml")
+
+[node name="root" type="CharacterBody2D" unique_id=926762924]
 script = ExtResource("1_s")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1416380827]
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1691824869]
+scale = Vector2(2, 2)
+texture = SubResource("AtlasTexture_3li8b")
 
-[node name="GunSprite" type="Sprite2D" parent="Sprite2D"]
+[node name="GunSprite" type="Sprite2D" parent="Sprite2D" unique_id=382972312]
+visible = false
 z_index = 1
-position = Vector2(24, 0)
+position = Vector2(0, -12)
+texture = SubResource("AtlasTexture_v6fml")

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/HeavyBullet.gd" id="1_s"]
+
+[node name="root" type="Area2D" script=ExtResource("1_s") unique_id=277020840]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=371106171]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=699125812]

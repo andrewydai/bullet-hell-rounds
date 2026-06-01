@@ -1,20 +1,20 @@
-[gd_scene load_steps=4 format=3 uid="uid://cu0payrvj33lt"]
+[gd_scene format=3 uid="uid://cu0payrvj33lt"]
 
+[ext_resource type="Texture2D" uid="uid://fwkc427lujc6" path="res://assets/bullet_hell_rounds_background_simple.png" id="1_0bbpv"]
 [ext_resource type="PackedScene" uid="uid://df6o1lhv0xyvr" path="res://scenes/GameWorld.tscn" id="1_main"]
 [ext_resource type="PackedScene" uid="uid://cvrq3vylkphxy" path="res://scenes/HUD.tscn" id="2_main"]
-[ext_resource type="Texture2D" uid="uid://dfuvyhmfqiwb2" path="res://assets/bullet_hell_rounds_background.png" id="3_0bbpv"]
 
-[node name="Main" type="Node"]
+[node name="Main" type="Node" unique_id=1441418842]
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1822560777]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("3_0bbpv")
+texture = ExtResource("1_0bbpv")
 expand_mode = 4
 
-[node name="GameWorld" parent="." instance=ExtResource("1_main")]
+[node name="GameWorld" parent="." unique_id=611285945 instance=ExtResource("1_main")]
 
-[node name="HUD" parent="." instance=ExtResource("2_main")]
+[node name="HUD" parent="." unique_id=1515539587 instance=ExtResource("2_main")]
